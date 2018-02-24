@@ -1,0 +1,16 @@
+
+\.settings/
+
+\.project
+
+warrant-model/\.classpath
+
+warrant-repository/\.classpath
+
+warrant-web/\.classpath
+
+warrant-service/\.classpath
+
+warrant-ui/\.classpath
+
+warrant-util/\.classpath
