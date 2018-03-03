@@ -6,6 +6,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 
+import hu.baranyos.utils.StringUtils;
+
 @org.springframework.stereotype.Component
 public class WarrantMenuFactory implements UIComponentBuilder {
 
@@ -14,8 +16,8 @@ public class WarrantMenuFactory implements UIComponentBuilder {
         private TreeData<String> menuData;
 
         public WarrantMenu init() {
-            mainMenu = new Tree<String>();
-            menuData = new TreeData<String>();
+            mainMenu = new Tree<>();
+            menuData = new TreeData<>();
             return this;
         }
 
@@ -23,10 +25,12 @@ public class WarrantMenuFactory implements UIComponentBuilder {
             setWidth("100");
             setHeightUndefined();
 
-            menuData.addItem(null, "Base");
-            menuData.addItem("Base", "Children");
+            menuData.addItem(null, StringUtils.BASE_MENU.getString())
+                    .addItem(StringUtils.BASE_MENU.getString(), StringUtils.CHILDREN_MENU.getString())
+                    .addItem(StringUtils.BASE_MENU.getString(), StringUtils.CHILDREN_MENU2.getString());
 
-            mainMenu.setDataProvider(new TreeDataProvider<String>(menuData));
+            mainMenu.setDataProvider(new TreeDataProvider<>(menuData));
+            mainMenu.expand(StringUtils.BASE_MENU.getString());
 
             addComponent(mainMenu);
 
@@ -34,6 +38,7 @@ public class WarrantMenuFactory implements UIComponentBuilder {
         }
     }
 
+    @Override
     public Component createComponent() {
         return new WarrantMenu().init().setLayout();
     }
