@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import hu.baranyos.ui.navigator.WarrantNavigator;
+import hu.baranyos.ui.travels.TravelsLayoutFactory;
 
 @SpringUI(path = WarrantMainUI.NAME)
 @Title("TRAVELLING WARRANT")
@@ -69,8 +70,8 @@ public class WarrantMainUI extends UI {
         uiLayout.setComponentAlignment(changeTab, Alignment.TOP_CENTER);
         uiLayout.setComponentAlignment(menu, Alignment.TOP_CENTER);
 
-        uiLayout.setExpandRatio(menu, 1);
-        uiLayout.setExpandRatio(changeTab, 2);
+        uiLayout.setExpandRatio(menu, 1.0f);
+        uiLayout.setExpandRatio(changeTab, 2.0f);
 
         logoPanel.setContent(logo);
         contentPanel.setContent(uiLayout);
@@ -90,7 +91,7 @@ public class WarrantMainUI extends UI {
         final WarrantNavigator navigator = new WarrantNavigator(this, changeTab);
         applicationContext.getAutowireCapableBeanFactory().autowireBean(navigator);
         navigator.addProvider(springViewProvider);
-        // navigator.navigateTo();
+        navigator.navigateTo(TravelsLayoutFactory.NAME);
     }
 
 }

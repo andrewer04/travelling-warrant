@@ -10,7 +10,7 @@ public class WarrantNavigator extends Navigator {
         super(ui, container);
     }
 
-    public static WarrantNavigator getNavigator() {
+    private static WarrantNavigator getNavigator() {
         final UI ui = UI.getCurrent();
         final Navigator navigator = ui.getNavigator();
 
@@ -18,7 +18,11 @@ public class WarrantNavigator extends Navigator {
     }
 
     public static void navigate(final String path) {
-        WarrantNavigator.getNavigator().navigateTo(path);
+        try {
+            WarrantNavigator.getNavigator().navigateTo(path);
+        } catch (final Exception e) {
+            return;
+        }
     }
 
     @Override
