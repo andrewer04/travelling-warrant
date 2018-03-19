@@ -2,6 +2,7 @@ package hu.baranyos.ui.commons;
 
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.Tree.ItemClick;
@@ -25,7 +26,8 @@ public class WarrantMenuFactory implements UIComponentBuilder {
 
                 @Override
                 public void itemClick(final ItemClick<String> event) {
-                    final String selectedItemPath = StringUtils.fromString(event.getItem()).toString();
+                    final String selectedItemPath =
+                            StringUtils.fromString(event.getItem()).toString();
 
                     if (selectedItemPath == null) {
                         return;
@@ -52,6 +54,8 @@ public class WarrantMenuFactory implements UIComponentBuilder {
 
             addComponent(mainMenu);
 
+            setSizeFull();
+            this.setMargin(new MarginInfo(false, false, false, false));
             return this;
         }
     }

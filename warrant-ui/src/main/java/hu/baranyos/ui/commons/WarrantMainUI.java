@@ -68,10 +68,10 @@ public class WarrantMainUI extends UI {
         uiLayout.addComponent(changeTab);
 
         uiLayout.setComponentAlignment(changeTab, Alignment.TOP_CENTER);
-        uiLayout.setComponentAlignment(menu, Alignment.TOP_CENTER);
+        uiLayout.setComponentAlignment(menu, Alignment.TOP_LEFT);
 
         uiLayout.setExpandRatio(menu, 1.0f);
-        uiLayout.setExpandRatio(changeTab, 2.0f);
+        uiLayout.setExpandRatio(changeTab, 4.0f);
 
         logoPanel.setContent(logo);
         contentPanel.setContent(uiLayout);
