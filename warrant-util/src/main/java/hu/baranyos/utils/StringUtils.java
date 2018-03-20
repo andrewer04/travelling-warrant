@@ -6,7 +6,9 @@ public enum StringUtils {
     TRAVELS("Utazások"),
     FUELING("Tankolások"),
     REPORTS("Elszámolások"),
-    USERS("Felhasználók");
+    USERS("Felhasználók"),
+    NEW_USER("Új felhasználó"),
+    NEW_TRAVEL("Új utazás");
 
     private final String string;
 

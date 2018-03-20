@@ -1,16 +1,21 @@
 package hu.baranyos.ui.users;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.Validator;
+import com.vaadin.data.StatusChangeEvent;
+import com.vaadin.data.StatusChangeListener;
 import com.vaadin.data.converter.StringToIntegerConverter;
+import com.vaadin.data.validator.IntegerRangeValidator;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.RadioButtonGroup;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.themes.ValoTheme;
 
 import hu.baranyos.model.entity.User;
 import hu.baranyos.ui.commons.WarrantMainUI;
@@ -25,16 +30,17 @@ public class NewUserLayoutFactory extends FormLayout implements View {
     private final TextField age;
     private final RadioButtonGroup<String> gender;
     private final PasswordField password;
-    private Button saveButton;
-    private Button clearButton;
+    private final Button saveButton;
+    private final Button clearButton;
 
     Binder<User> binder;
 
     public static final String NAME = "new_user";
 
     private NewUserLayoutFactory() {
+        super();
         setSpacing(false);
-        this.setMargin(false);
+        this.setMargin(true);
         setCaption("Új felhasználó létrehozása");
 
         firstName = new TextField(UserStringUtils.FIRST_NAME.getString());
@@ -44,47 +50,75 @@ public class NewUserLayoutFactory extends FormLayout implements View {
         password = new PasswordField(UserStringUtils.PASSWORD.getString());
         saveButton = new Button(UserStringUtils.SAVE_BUTTON.getString());
         clearButton = new Button(UserStringUtils.CLEAR_BUTTON.getString());
-        
-        gender.setItems(Gender.MALE.getString(),Gender.FEMALE.getString());
-        
+
+        gender.setItems(Gender.MALE.getString(), Gender.FEMALE.getString());
+        gender.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+
+        saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+        saveButton.setEnabled(false);
+
+        clearButton.setStyleName(ValoTheme.BUTTON_DANGER);
+
         binder = new Binder<>();
     }
 
     @Override
     public void enter(final ViewChangeEvent event) {
         removeAllComponents();
+        bind();
         addLayout();
     }
 
     private void addLayout() {
+        addComponentAsFirst(firstName);
+        this.addComponent(lastName);
+        this.addComponent(age);
+        this.addComponent(gender);
+        this.addComponent(password);
+        this.addComponent(firstName);
+        this.addComponent(new HorizontalLayout(saveButton, clearButton));
+
+    }
+
+    private void bind() {
         binder.forField(firstName)
-        .asRequired()
-        .bind(User::getFirstName, User::setFirstName);
+                .asRequired(UserStringUtils.REQUIRED.getString())
+                .bind(User::getFirstName, User::setFirstName);
 
         binder.forField(lastName)
-        .asRequired()
-        .bind(User::getLastName, User::setLastName);
-        
+                .asRequired(UserStringUtils.REQUIRED.getString())
+                .bind(User::getLastName, User::setLastName);
+
         binder.forField(age)
-        .asRequired()
-        .withConverter(new StringToIntegerConverter("Kérlek számot írj bele!"))
-        .bind(User::getAge, User::setAge);
-        
+                .asRequired(UserStringUtils.REQUIRED.getString())
+                .withConverter(new StringToIntegerConverter(UserStringUtils.AGE_WARNING
+                        .getString()))
+                .withValidator(new IntegerRangeValidator(UserStringUtils.AGE_RANGE_WARNING
+                        .getString(), 10, 99))
+                .bind(User::getAge, User::setAge);
+
         binder.forField(gender)
-        .asRequired()
-        .bind(User::getGender, User::setGender);
-        
+                .asRequired(UserStringUtils.REQUIRED.getString())
+                .bind(User::getGender, User::setGender);
+
         binder.forField(password)
-        .asRequired()
-        .bind(User::getPassword, User::setPassword);
-        
+                .asRequired()
+                .withValidator(new StringLengthValidator(UserStringUtils.PASSWORD_WARNING
+                        .getString(), 5, null))
+                .bind(User::getPassword, User::setPassword);
+
         binder.setBean(new User());
-        
-        saveButton.setEnabled(false);
-        saveButton.addClickListener(
-                event -> registerNewUser(binder.getBean()));
-        
-        binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
+
+        /*
+         * saveButton.addClickListener( event -> registerNewUser(binder.getBean()));
+         */
+
+        binder.addStatusChangeListener(new StatusChangeListener() {
+            @Override
+            public void statusChange(final StatusChangeEvent event) {
+                saveButton.setEnabled(binder.isValid());
+            }
+        });
 
     }
 }

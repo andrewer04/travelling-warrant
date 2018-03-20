@@ -42,7 +42,7 @@ public class WarrantMainUI extends UI {
     @Override
     protected void init(final VaadinRequest request) {
 
-        changeTab.setHeight("100");
+        changeTab.setHeightUndefined();
 
         final VerticalLayout rootLayout = new VerticalLayout();
 
