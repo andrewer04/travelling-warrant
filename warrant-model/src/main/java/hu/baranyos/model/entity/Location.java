@@ -1,7 +1,19 @@
 package hu.baranyos.model.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "LOCATION")
 public class Location {
+
+    @Id
+    @GeneratedValue
     private int id;
+
+    private String name;
 
     public int getId() {
         return id;
@@ -18,8 +30,6 @@ public class Location {
     public void setName(final String name) {
         this.name = name;
     }
-
-    private String name;
 
     @Override
     public String toString() {

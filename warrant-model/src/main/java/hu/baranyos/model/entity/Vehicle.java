@@ -2,7 +2,17 @@ package hu.baranyos.model.entity;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "VEHICLE")
 public class Vehicle {
+
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
     private double consumption;

@@ -2,11 +2,31 @@ package hu.baranyos.model.entity;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "FUELING")
 public class Fueling {
+
+    @Id
+    @GeneratedValue
     private int id;
+
     private int amount;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
     private User user;
+
     private Date date;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
     private Vehicle vehicle;
 
     public int getId() {

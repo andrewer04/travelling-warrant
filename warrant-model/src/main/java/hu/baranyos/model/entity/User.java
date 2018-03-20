@@ -2,15 +2,37 @@ package hu.baranyos.model.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "USER")
 public class User {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     private Integer id;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
     private int age;
+
     private String gender;
+
     private String password;
+
     private List<Travel> travels;
+
+    @OneToMany(mappedBy = "user")
     private List<Fueling> fuelings;
 
     public String getPassword() {

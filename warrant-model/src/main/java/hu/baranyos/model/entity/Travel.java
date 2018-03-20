@@ -3,15 +3,39 @@ package hu.baranyos.model.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "TRAVEL")
 public class Travel {
+
+    @Id
+    @GeneratedValue
     private int id;
-    private int start;
-    private int end;
+
+    private int startKilometer;
+    private int endKilometer;
     private int distance;
-    private Location from;
-    private Location to;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Location startLocation;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Location endLocation;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
     private Vehicle vehicle;
+
     private List<User> users;
+
     private Date date;
 
     public int getId() {
@@ -23,19 +47,19 @@ public class Travel {
     }
 
     public int getStart() {
-        return start;
+        return startKilometer;
     }
 
     public void setStart(final int start) {
-        this.start = start;
+        startKilometer = start;
     }
 
     public int getEnd() {
-        return end;
+        return endKilometer;
     }
 
     public void setEnd(final int end) {
-        this.end = end;
+        endKilometer = end;
     }
 
     public int getDistance() {
@@ -47,19 +71,19 @@ public class Travel {
     }
 
     public Location getFrom() {
-        return from;
+        return startLocation;
     }
 
     public void setFrom(final Location from) {
-        this.from = from;
+        startLocation = from;
     }
 
     public Location getTo() {
-        return to;
+        return endLocation;
     }
 
     public void setTo(final Location to) {
-        this.to = to;
+        endLocation = to;
     }
 
     public Vehicle getVehicle() {
