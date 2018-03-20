@@ -3,7 +3,6 @@ package hu.baranyos.ui.users;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 import hu.baranyos.ui.commons.WarrantMainUI;
@@ -15,6 +14,12 @@ public class UsersLayoutFactory extends VerticalLayout implements View {
 
     @Override
     public void enter(final ViewChangeEvent event) {
-        addComponent(new Label("This is the users layout"));
+        removeAllComponents();
+        addLayout();
+    }
+
+    private void addLayout() {
+        setMargin(true);
+
     }
 }

@@ -9,8 +9,17 @@ public class User {
     private String lastName;
     private int age;
     private String gender;
+    private String password;
     private List<Travel> travels;
     private List<Fueling> fuelings;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 
     public Integer getId() {
         return id;
