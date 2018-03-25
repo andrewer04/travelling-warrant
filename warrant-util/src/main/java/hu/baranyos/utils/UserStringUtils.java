@@ -11,7 +11,7 @@ public enum UserStringUtils {
     CLEAR_BUTTON("Törlés"),
     REQUIRED("Kötelező"),
     AGE_WARNING("Kérlek számot írj bele!"),
-    PASSWORD_WARNING("Hibás email!"),
+    PASSWORD_WARNING("Minimum 5 karakter hosszúnak kell lennie!"),
     AGE_RANGE_WARNING("10 - 99 között kell lennie!");
 
     private final String string;

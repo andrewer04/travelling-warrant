@@ -10,6 +10,8 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PasswordField;
@@ -17,7 +19,10 @@ import com.vaadin.ui.RadioButtonGroup;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import hu.baranyos.model.entity.User;
+import hu.baranyos.service.adduser.AddUserService;
 import hu.baranyos.ui.commons.WarrantMainUI;
 import hu.baranyos.utils.Gender;
 import hu.baranyos.utils.UserStringUtils;
@@ -32,6 +37,9 @@ public class NewUserLayoutFactory extends FormLayout implements View {
     private final PasswordField password;
     private final Button saveButton;
     private final Button clearButton;
+
+    @Autowired
+    private AddUserService addUserService;
 
     Binder<User> binder;
 
@@ -109,9 +117,20 @@ public class NewUserLayoutFactory extends FormLayout implements View {
 
         binder.setBean(new User());
 
-        /*
-         * saveButton.addClickListener( event -> registerNewUser(binder.getBean()));
-         */
+        saveButton.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(final ClickEvent event) {
+                addUserService.saveUser(binder.getBean());
+                clearFields();
+            }
+        });
+
+        clearButton.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(final ClickEvent event) {
+                clearFields();
+            }
+        });
 
         binder.addStatusChangeListener(new StatusChangeListener() {
             @Override
@@ -120,5 +139,13 @@ public class NewUserLayoutFactory extends FormLayout implements View {
             }
         });
 
+    }
+
+    private void clearFields() {
+        firstName.clear();
+        lastName.clear();
+        age.clear();
+        gender.clear();
+        password.clear();
     }
 }
