@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,6 +33,11 @@ public class User {
 
     private String password;
 
+    @ManyToMany
+    @JoinTable(
+            name = "USER_TRAVELS",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "travel_id", referencedColumnName = "id"))
     private List<Travel> travels;
 
     @OneToMany(mappedBy = "user")

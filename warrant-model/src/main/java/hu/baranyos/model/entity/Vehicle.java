@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,7 +18,11 @@ public class Vehicle {
     private String name;
     private double consumption;
     private String licencePlateNumber;
+
+    @OneToMany(mappedBy = "vehicle")
     private List<Travel> travels;
+
+    @OneToMany(mappedBy = "vehicle")
     private List<Fueling> fuelings;
 
     public int getId() {

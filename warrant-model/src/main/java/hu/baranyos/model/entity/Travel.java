@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,17 +24,18 @@ public class Travel {
     private int distance;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "start_location")
     private Location startLocation;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "end_location")
     private Location endLocation;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
+    @ManyToMany(mappedBy = "travels")
     private List<User> users;
 
     private Date date;

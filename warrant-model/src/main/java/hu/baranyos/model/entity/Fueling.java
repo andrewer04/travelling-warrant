@@ -20,13 +20,13 @@ public class Fueling {
     private int amount;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
     public int getId() {
