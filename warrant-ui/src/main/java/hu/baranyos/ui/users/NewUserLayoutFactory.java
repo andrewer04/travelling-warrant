@@ -22,7 +22,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import hu.baranyos.model.entity.User;
-import hu.baranyos.service.adduser.AddUserService;
+import hu.baranyos.service.user.UserService;
 import hu.baranyos.ui.commons.WarrantMainUI;
 import hu.baranyos.utils.Gender;
 import hu.baranyos.utils.UserStringUtils;
@@ -39,7 +39,7 @@ public class NewUserLayoutFactory extends FormLayout implements View {
     private final Button clearButton;
 
     @Autowired
-    private AddUserService addUserService;
+    private UserService userService;
 
     Binder<User> binder;
 
@@ -120,7 +120,7 @@ public class NewUserLayoutFactory extends FormLayout implements View {
         saveButton.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
-                addUserService.saveUser(binder.getBean());
+                userService.saveUser(binder.getBean());
                 clearFields();
             }
         });
