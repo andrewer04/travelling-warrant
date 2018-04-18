@@ -8,7 +8,8 @@ public enum StringUtils {
     REPORTS("Elszámolások"),
     USERS("Felhasználók"),
     NEW_USER("Új felhasználó"),
-    NEW_TRAVEL("Új utazás");
+    NEW_TRAVEL("Új utazás"),
+    ADD_FUELING("Új tankolás");
 
     private final String string;
 
