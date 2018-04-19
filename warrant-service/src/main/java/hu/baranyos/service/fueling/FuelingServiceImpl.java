@@ -3,10 +3,12 @@ package hu.baranyos.service.fueling;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import hu.baranyos.model.entity.Fueling;
 import hu.baranyos.repository.fueling.FuelingRepository;
 
+@Service
 public class FuelingServiceImpl implements FuelingService {
 
     @Autowired
