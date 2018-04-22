@@ -3,6 +3,7 @@ package hu.baranyos.utils;
 public enum StringUtils {
 
     LOGIN("Bejelentkezés"),
+    LOGOUT("Kijelentkezés"),
     TRAVELS("Utazások"),
     FUELING("Tankolások"),
     REPORTS("Elszámolások"),

@@ -7,7 +7,10 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.Tree.ItemClick;
 import com.vaadin.ui.Tree.ItemClickListener;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import hu.baranyos.ui.navigator.WarrantNavigator;
 import hu.baranyos.utils.StringUtils;
@@ -33,6 +36,11 @@ public class WarrantMenuFactory implements UIComponentBuilder {
                         return;
                     }
 
+                    if (selectedItemPath.equals("LOGOUT")) {
+                        SecurityContextHolder.clearContext();
+                        UI.getCurrent().getPage().setLocation("/ui");
+                    }
+
                     final String path = selectedItemPath.toLowerCase().replaceAll("\\s+", "");
                     WarrantNavigator.navigate(path);
                 }
@@ -48,7 +56,8 @@ public class WarrantMenuFactory implements UIComponentBuilder {
                     .addItem(null, StringUtils.TRAVELS.getString())
                     .addItem(null, StringUtils.FUELING.getString())
                     .addItem(null, StringUtils.REPORTS.getString())
-                    .addItem(null, StringUtils.USERS.getString());
+                    .addItem(null, StringUtils.USERS.getString())
+                    .addItem(null, StringUtils.LOGOUT.getString());
             menuData.addItem(StringUtils.USERS.getString(), StringUtils.NEW_USER.getString())
                     .addItem(StringUtils.TRAVELS.getString(), StringUtils.NEW_TRAVEL.getString())
                     .addItem(StringUtils.FUELING.getString(), StringUtils.ADD_FUELING.getString());

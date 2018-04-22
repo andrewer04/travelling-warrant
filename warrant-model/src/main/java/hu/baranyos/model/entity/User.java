@@ -1,5 +1,6 @@
 package hu.baranyos.model.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
-        return null;
+        return new ArrayList<GrantedAuthority>();
     }
 
     @Override

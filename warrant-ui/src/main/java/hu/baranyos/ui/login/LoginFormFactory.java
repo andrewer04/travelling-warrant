@@ -1,15 +1,20 @@
 package hu.baranyos.ui.login;
 
+import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,71 +23,102 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
 import hu.baranyos.utils.UserStringUtils;
 
-@Component
-public class LoginFormFactory extends FormLayout {
+@org.springframework.stereotype.Component
+public class LoginFormFactory {
 
     @Autowired
-    private DaoAuthenticationProvider authenticationProvider;
+    private DaoAuthenticationProvider daoAuthenticationProvider;
 
-    private final TextField usernameField;
-    private final TextField passwordField;
+    private class LoginForm {
+        private VerticalLayout root;
+        private Panel panel;
 
-    private final Button loginButton;
-    private final Button signupButton;
+        private TextField usernameField;
+        private TextField passwordField;
 
-    public LoginFormFactory() {
-        usernameField = new TextField(UserStringUtils.USERNAME.getString());
-        passwordField = new PasswordField(UserStringUtils.PASSWORD.getString());
+        private Button loginButton;
+        private Button signupButton;
 
-        loginButton = new Button(UserStringUtils.LOGIN.getString());
-        signupButton = new Button(UserStringUtils.SIGNUP_BUTTON.getString());
+        private HorizontalLayout buttonLayout;
 
-        loginButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-        loginButton.setEnabled(true);
+        private LoginForm init() {
+            root = new VerticalLayout();
+            root.setMargin(true);
+            root.setHeight("100%");
 
-        signupButton.setStyleName(ValoTheme.BUTTON_DANGER);
+            panel = new Panel(UserStringUtils.LOGIN.getString());
+            panel.setSizeUndefined();
 
-        loginButton.addClickListener(new ClickListener() {
+            usernameField = new TextField(UserStringUtils.USERNAME.getString());
+            passwordField = new PasswordField(UserStringUtils.PASSWORD.getString());
 
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                try {
+            loginButton = new Button(UserStringUtils.LOGIN.getString());
+            signupButton = new Button(UserStringUtils.SIGNUP_BUTTON.getString());
 
-                    final Authentication auth =
-                            new UsernamePasswordAuthenticationToken(usernameField
-                                    .getValue(), passwordField.getValue());
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(authenticationProvider.authenticate(auth));
+            buttonLayout = new HorizontalLayout(loginButton, signupButton);
 
-                } catch (final AuthenticationException e) {
-                    Notification.show(UserStringUtils.LOGIN_FAILED.getString(), Type.ERROR_MESSAGE);
+            loginButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+            loginButton.setEnabled(true);
+
+            signupButton.setStyleName(ValoTheme.BUTTON_DANGER);
+
+            loginButton.addClickListener(new ClickListener() {
+
+                @Override
+                public void buttonClick(final ClickEvent event) {
+                    try {
+                        final Authentication auth =
+                                new UsernamePasswordAuthenticationToken(usernameField
+                                        .getValue(), passwordField.getValue());
+                        final Authentication authenticated =
+                                daoAuthenticationProvider.authenticate(auth);
+                        SecurityContextHolder.getContext().setAuthentication(authenticated);
+
+                        UI.getCurrent().getPage().setLocation("/ui");
+
+                        usernameField.clear();
+                        passwordField.clear();
+
+                    } catch (final AuthenticationException e) {
+                        Notification
+                                .show(UserStringUtils.LOGIN_FAILED.getString(), Type.ERROR_MESSAGE);
+                    }
                 }
+            });
 
-            }
+            loginButton.setClickShortcut(KeyCode.ENTER);
 
-        });
+            signupButton.addClickListener(new ClickListener() {
+                @Override
+                public void buttonClick(final ClickEvent event) {
+                    UI.getCurrent().getPage().setLocation("/signup");
+                }
+            });
 
-        signupButton.addClickListener(new ClickListener() {
+            return this;
+        }
 
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                UI.getCurrent().getPage().setLocation("/signup");
+        public Component createFormLayout() {
+            root.addComponent(panel);
+            root.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
 
-            }
-        });
+            final FormLayout loginLayout = new FormLayout();
+
+            loginLayout.addComponent(usernameField);
+            loginLayout.addComponent(passwordField);
+            loginLayout.addComponent(buttonLayout);
+            loginLayout.setSizeUndefined();
+            loginLayout.setMargin(true);
+
+            panel.setContent(loginLayout);
+            return root;
+        }
     }
 
-    public FormLayout createFormLayout() {
-        this.addComponent(usernameField);
-        this.addComponent(passwordField);
-        this.addComponent(new HorizontalLayout(loginButton, signupButton));
-        setSizeUndefined();
-        this.setMargin(true);
-        return this;
+    public Component createComponent() {
+        return new LoginForm().init().createFormLayout();
     }
-
 }
