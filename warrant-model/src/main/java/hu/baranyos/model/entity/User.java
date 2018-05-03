@@ -1,11 +1,12 @@
 package hu.baranyos.model.entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -37,9 +39,16 @@ public class User implements UserDetails {
 
     private int age;
 
+    private boolean isEnabled;
+
     private String gender;
 
-    // private Collection<Role> authorities;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "USERS_ROLES",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     private String username;
 
@@ -47,13 +56,33 @@ public class User implements UserDetails {
 
     @ManyToMany
     @JoinTable(
-            name = "USER_TRAVELS",
+            name = "USERS_TRAVELS",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "travel_id", referencedColumnName = "id"))
     private List<Travel> travels;
 
     @OneToMany(mappedBy = "user")
     private List<Fueling> fuelings;
+
+    public User() {}
+
+    public User(
+            final String firstName,
+            final String lastName,
+            final int age,
+            final String gender,
+            final Collection<Role> roles,
+            final String username,
+            final String password) {
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.gender = gender;
+        this.roles = roles;
+        this.username = username;
+        this.password = password;
+    }
 
     @Override
     public String toString() {
@@ -62,8 +91,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        return new ArrayList<GrantedAuthority>();
+        final Collection<GrantedAuthority> authorities = new HashSet<>();
+        for (final Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
     }
 
     @Override
@@ -101,7 +133,11 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
+    }
+
+    public void setEnabled(final boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     public Integer getId() {
@@ -154,6 +190,14 @@ public class User implements UserDetails {
 
     public void setFuelings(final List<Fueling> fuelings) {
         this.fuelings = fuelings;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(final Collection<Role> roles) {
+        this.roles = roles;
     }
 
 }
