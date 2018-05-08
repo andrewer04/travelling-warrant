@@ -11,6 +11,7 @@ import com.vaadin.ui.VerticalLayout;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 
 import hu.baranyos.model.entity.User;
 import hu.baranyos.service.user.UserService;
@@ -18,6 +19,7 @@ import hu.baranyos.ui.commons.WarrantMainUI;
 import hu.baranyos.utils.UserStringUtils;
 
 @SpringView(name = UsersLayoutFactory.NAME, ui = WarrantMainUI.class)
+@Secured("ROLE_ADMIN")
 public class UsersLayoutFactory extends VerticalLayout implements View {
 
     public static final String NAME = "users";

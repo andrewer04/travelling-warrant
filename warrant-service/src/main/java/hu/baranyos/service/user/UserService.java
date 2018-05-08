@@ -8,4 +8,6 @@ public interface UserService {
     public void saveUser(User userDAO);
 
     public List<User> getAllUser();
+
+    public User getCurrentUser();
 }

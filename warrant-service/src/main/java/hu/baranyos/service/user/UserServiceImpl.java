@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -53,6 +54,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional(readOnly = true)
     public List<User> getAllUser() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return userRepository
+                .findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override

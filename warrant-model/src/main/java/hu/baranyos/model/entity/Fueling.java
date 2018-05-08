@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 public class Fueling {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private int amount;
@@ -29,11 +30,11 @@ public class Fueling {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(final int id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 

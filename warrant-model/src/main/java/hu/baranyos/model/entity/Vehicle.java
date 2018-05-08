@@ -2,6 +2,7 @@ package hu.baranyos.model.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +15,9 @@ public class Vehicle {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
+
+    @Column(unique = true)
     private String name;
     private double consumption;
     private String licencePlateNumber;

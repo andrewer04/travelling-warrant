@@ -52,8 +52,7 @@ public class WarrantMenuFactory implements UIComponentBuilder {
             setWidth("100");
             setHeightUndefined();
 
-            menuData.addItem(null, StringUtils.LOGIN.getString())
-                    .addItem(null, StringUtils.TRAVELS.getString())
+            menuData.addItem(null, StringUtils.TRAVELS.getString())
                     .addItem(null, StringUtils.FUELING.getString())
                     .addItem(null, StringUtils.REPORTS.getString())
                     .addItem(null, StringUtils.USERS.getString())
