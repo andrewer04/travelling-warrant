@@ -54,12 +54,16 @@ public class WarrantMenuFactory implements UIComponentBuilder {
 
             menuData.addItem(null, StringUtils.TRAVELS.getString())
                     .addItem(null, StringUtils.FUELING.getString())
+                    .addItem(null, StringUtils.VEHICLES.getString())
+                    .addItem(null, StringUtils.LOCATIONS.getString())
                     .addItem(null, StringUtils.REPORTS.getString())
                     .addItem(null, StringUtils.USERS.getString())
                     .addItem(null, StringUtils.LOGOUT.getString());
             menuData.addItem(StringUtils.USERS.getString(), StringUtils.NEW_USER.getString())
                     .addItem(StringUtils.TRAVELS.getString(), StringUtils.NEW_TRAVEL.getString())
-                    .addItem(StringUtils.FUELING.getString(), StringUtils.ADD_FUELING.getString());
+                    .addItem(StringUtils.FUELING.getString(), StringUtils.ADD_FUELING.getString())
+                    .addItem(StringUtils.VEHICLES.getString(), StringUtils.NEW_VEHICLE.getString())
+                    .addItem(StringUtils.LOCATIONS.getString(), StringUtils.NEW_LOCATION.getString());
 
             mainMenu.setDataProvider(new TreeDataProvider<>(menuData));
 

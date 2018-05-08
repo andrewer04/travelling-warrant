@@ -1,16 +1,14 @@
-package hu.baranyos.ui.fueling;
+package hu.baranyos.ui.location;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.StatusChangeEvent;
 import com.vaadin.data.StatusChangeListener;
-import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
@@ -18,49 +16,36 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import hu.baranyos.model.entity.Fueling;
-import hu.baranyos.model.entity.Vehicle;
-import hu.baranyos.service.fueling.FuelingService;
-import hu.baranyos.service.vehicle.VehicleService;
+import hu.baranyos.model.entity.Location;
+import hu.baranyos.service.location.LocationService;
 import hu.baranyos.ui.commons.WarrantMainUI;
-import hu.baranyos.utils.FuelingStringUtils;
+import hu.baranyos.utils.LocationStringUtils;
 import hu.baranyos.utils.UserStringUtils;
 
-@SpringView(name = AddFuelingLayoutFactory.NAME, ui = WarrantMainUI.class)
-public class AddFuelingLayoutFactory extends FormLayout implements View {
+@SpringView(name = NewLocationLayoutFactory.NAME, ui = WarrantMainUI.class)
+public class NewLocationLayoutFactory extends FormLayout implements View {
 
-    private static final long serialVersionUID = -8628736846386636047L;
+    private static final long serialVersionUID = 1L;
 
-    private final TextField amount;
-    private final ComboBox<Vehicle> vehicle;
+    public static final String NAME = "new_location";
+
+    @Autowired
+    private LocationService locationService;
+
+    private final TextField name;
     private final Button saveButton;
     private final Button clearButton;
 
-    @Autowired
-    private FuelingService fuelingService;
+    private final Binder<Location> binder;
 
-    @Autowired
-    private VehicleService vehicleService;
-
-    private Binder<Fueling> binder;
-
-    public static final String NAME = "add_fueling";
-
-    private AddFuelingLayoutFactory() {
+    private NewLocationLayoutFactory() {
         super();
         setSpacing(false);
-        this.setMargin(true);
+        setMargin(true);
 
-        amount = new TextField(FuelingStringUtils.AMOUNT.getString());
-        vehicle = new ComboBox<>(FuelingStringUtils.VEHICLE.getString());
+        name = new TextField(LocationStringUtils.NAME.getString());
         saveButton = new Button(UserStringUtils.SAVE_BUTTON.getString());
         clearButton = new Button(UserStringUtils.CLEAR_BUTTON.getString());
-    }
-
-    public void init() {
-        vehicle.setItems(vehicleService.getAllVehicle());
-        vehicle.setPlaceholder(FuelingStringUtils.VEHICLE_PLACEHOLDER.getString());
-        vehicle.setItemCaptionGenerator(Vehicle::getName);
 
         saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
         saveButton.setEnabled(false);
@@ -73,37 +58,30 @@ public class AddFuelingLayoutFactory extends FormLayout implements View {
     @Override
     public void enter(final ViewChangeEvent event) {
         removeAllComponents();
-        init();
         bind();
         addLayout();
     }
 
     private void addLayout() {
-        this.addComponent(vehicle);
-        this.addComponent(amount);
+        this.addComponent(name);
         this.addComponent(new HorizontalLayout(saveButton, clearButton));
 
     }
 
     private void bind() {
-        binder.forField(vehicle)
+        binder.forField(name)
                 .asRequired()
-                .bind(Fueling::getVehicle, Fueling::setVehicle);
+                .bind(Location::getName, Location::setName);
 
-        binder.forField(amount)
-                .asRequired()
-                .withConverter(new StringToIntegerConverter(FuelingStringUtils.AMOUNT_WARNING
-                        .getString()))
-                .bind(Fueling::getAmount, Fueling::setAmount);
-
-        binder.setBean(new Fueling());
+        binder.setBean(new Location());
 
         saveButton.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
-                fuelingService.save(binder.getBean());
+                locationService.saveLocation(binder.getBean());
                 clearFields();
             }
+
         });
 
         clearButton.addClickListener(new ClickListener() {
@@ -119,11 +97,9 @@ public class AddFuelingLayoutFactory extends FormLayout implements View {
                 saveButton.setEnabled(binder.isValid());
             }
         });
-
     }
 
     private void clearFields() {
-        vehicle.clear();
-        amount.clear();
+        name.clear();
     }
 }
