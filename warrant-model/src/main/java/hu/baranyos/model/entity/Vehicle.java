@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -14,12 +15,15 @@ import javax.persistence.Table;
 public class Vehicle {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true)
     private String name;
+
     private double consumption;
+
+    @Column(unique = true)
     private String licencePlateNumber;
 
     @OneToMany(mappedBy = "vehicle")
@@ -28,11 +32,11 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle")
     private List<Fueling> fuelings;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(final int id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 

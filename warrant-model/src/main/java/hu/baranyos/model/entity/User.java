@@ -54,11 +54,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "USERS_TRAVELS",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "travel_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "users")
     private List<Travel> travels;
 
     @OneToMany(mappedBy = "user")
@@ -86,7 +82,7 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return firstName + lastName;
+        return firstName + " " + lastName;
     }
 
     @Override
@@ -198,6 +194,19 @@ public class User implements UserDetails {
 
     public void setRoles(final Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof User)) {
+            return false;
+        }
+
+        final User user = (User) obj;
+        return user.id == id;
     }
 
 }

@@ -10,4 +10,6 @@ public interface UserService {
     public List<User> getAllUser();
 
     public User getCurrentUser();
+
+    public User getUser(Integer id);
 }

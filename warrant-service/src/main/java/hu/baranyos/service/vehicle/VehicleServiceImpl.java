@@ -22,12 +22,18 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    @Transactional
     public void saveVehicle(final Vehicle VehicleDAO) {
-        // TODO Auto-generated method stub
+        final Vehicle vehicle = new Vehicle();
+        vehicle.setConsumption(VehicleDAO.getConsumption());
+        vehicle.setLicencePlateNumber(VehicleDAO.getLicencePlateNumber());
+        vehicle.setName(VehicleDAO.getName());
 
+        vehicleRepository.save(vehicle);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Vehicle getVehicle(final String name) {
         return vehicleRepository.findByName(name);
     }

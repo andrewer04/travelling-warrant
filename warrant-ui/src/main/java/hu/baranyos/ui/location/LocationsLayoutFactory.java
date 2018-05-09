@@ -8,8 +8,8 @@ import com.vaadin.ui.VerticalLayout;
 
 import hu.baranyos.ui.commons.WarrantMainUI;
 
-@SpringView(name = LocationLayoutFactory.NAME, ui = WarrantMainUI.class)
-public class LocationLayoutFactory extends VerticalLayout implements View {
+@SpringView(name = LocationsLayoutFactory.NAME, ui = WarrantMainUI.class)
+public class LocationsLayoutFactory extends VerticalLayout implements View {
 
     private static final long serialVersionUID = 1L;
 

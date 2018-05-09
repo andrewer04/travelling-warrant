@@ -1,12 +1,14 @@
 package hu.baranyos.model.entity;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,8 +18,8 @@ import javax.persistence.Table;
 public class Travel {
 
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private int startKilometer;
     private int endKilometer;
@@ -35,16 +37,20 @@ public class Travel {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @ManyToMany(mappedBy = "travels")
-    private List<User> users;
+    @ManyToMany
+    @JoinTable(
+            name = "USERS_TRAVELS",
+            joinColumns = @JoinColumn(name = "travel_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private Set<User> users;
 
     private Date date;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(final int id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -96,11 +102,11 @@ public class Travel {
         this.vehicle = vehicle;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(final List<User> users) {
+    public void setUsers(final Set<User> users) {
         this.users = users;
     }
 
