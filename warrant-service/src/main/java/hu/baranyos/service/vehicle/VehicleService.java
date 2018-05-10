@@ -10,4 +10,6 @@ public interface VehicleService {
     public void saveVehicle(final Vehicle VehicleDAO);
 
     public List<Vehicle> getAllVehicle();
+
+    public Vehicle getVehicle(Integer id);
 }

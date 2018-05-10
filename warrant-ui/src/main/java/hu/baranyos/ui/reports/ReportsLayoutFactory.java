@@ -13,6 +13,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -24,6 +25,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 
 import hu.baranyos.model.entity.Report;
 import hu.baranyos.model.entity.Vehicle;
@@ -91,7 +93,21 @@ public class ReportsLayoutFactory extends VerticalLayout implements View {
         createButton.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent clickEvent) {
-                reportService.saveReport(vehicles.getValue());
+                boolean success = false;
+                try {
+                    success = reportService.saveReport(vehicles.getValue());
+                } catch (final AccessDeniedException e) {
+
+                }
+                finally {
+                    if (!success) {
+                        Notification.show(ReportStringUtils.WARNING.getString());
+                    }
+                    reportList = reportService.getAllReport();
+                    dataProvider.refreshAll();
+                    reportGrid.markAsDirty();
+                }
+
             }
         });
     }
@@ -116,5 +132,6 @@ public class ReportsLayoutFactory extends VerticalLayout implements View {
         vehicles.setItems(vehicleService.getAllVehicle());
         vehicles.setPlaceholder(FuelingStringUtils.VEHICLE_PLACEHOLDER.getString());
         vehicles.setItemCaptionGenerator(Vehicle::getName);
+        vehicles.setSelectedItem(vehicleService.getVehicle(1));
     }
 }

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class Report {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "USERS_REPORTS",
             joinColumns = @JoinColumn(name = "report_id", referencedColumnName = "id"),
@@ -39,13 +40,13 @@ public class Report {
     private int distanceSum;
     private int fuelingSum;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Map<User, Integer> userKm;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Map<User, Integer> userFuelings;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Map<User, Integer> userBalance;
 
     public Integer getId() {

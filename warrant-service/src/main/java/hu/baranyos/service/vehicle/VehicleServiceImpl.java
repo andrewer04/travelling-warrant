@@ -38,4 +38,10 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.findByName(name);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Vehicle getVehicle(final Integer id) {
+        return vehicleRepository.findOne(id);
+    }
+
 }

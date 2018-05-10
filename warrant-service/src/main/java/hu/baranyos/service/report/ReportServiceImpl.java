@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,11 +41,16 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Transactional
-    public void saveReport(final Vehicle vehicle) {
+    @Secured("ROLE_ADMIN")
+    public boolean saveReport(final Vehicle vehicle) {
         final Date lastDate = updateLastDate();
         final List<Travel> travelList = travelService.getByDateAfter(lastDate);
         final List<Fueling> fuelingList = fuelingService.getByDateAfter(lastDate);
         final Set<User> userList = getUsers(travelList);
+
+        if (travelList.isEmpty() || fuelingList.isEmpty()) {
+            return false;
+        }
 
         final Report report = new Report();
         report.setVehicle(vehicle);
@@ -63,6 +69,7 @@ public class ReportServiceImpl implements ReportService {
         report.setUserBalance(calculateBalance(distanceSum, fuelingsum, userKm, userFuelings, userList));
 
         reportRepository.save(report);
+        return true;
     }
 
     @Override

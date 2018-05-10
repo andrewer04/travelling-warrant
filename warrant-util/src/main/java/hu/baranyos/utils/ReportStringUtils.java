@@ -7,7 +7,14 @@ public enum ReportStringUtils {
     CREATE("Új elszámolás"),
     VIEW("Nézet"),
     DETAILS("Részletek"),
-    USER("Felhasználó");
+    DISTANCE_SUM("Megtett KM:"),
+    FUELING_SUM("Összes tankolás:"),
+    USER_KM("Felhasználó/KM"),
+    USER_FUELINGS("Felhasználó/tankolás"),
+    USER_BALANCE("Egyenleg"),
+    KM_COST("Ft/Km"),
+    USER("Felhasználó"),
+    WARNING("Nem sikerült");
 
     private final String string;
 
