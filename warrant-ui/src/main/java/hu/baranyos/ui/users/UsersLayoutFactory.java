@@ -22,6 +22,8 @@ import hu.baranyos.utils.UserStringUtils;
 @Secured("ROLE_ADMIN")
 public class UsersLayoutFactory extends VerticalLayout implements View {
 
+    private static final long serialVersionUID = 1L;
+
     public static final String NAME = "users";
 
     Grid<User> userGrid;
