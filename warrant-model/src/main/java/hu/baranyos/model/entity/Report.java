@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,10 @@ public class Report {
     private Integer id;
 
     private Date date;
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
 
     public Integer getId() {
         return id;
@@ -32,6 +38,14 @@ public class Report {
 
     public void setDate(final Date date) {
         this.date = date;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(final Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
 }

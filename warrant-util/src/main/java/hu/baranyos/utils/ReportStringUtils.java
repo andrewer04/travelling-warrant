@@ -2,10 +2,11 @@ package hu.baranyos.utils;
 
 public enum ReportStringUtils {
 
-    AMOUNT("Mennyiség"),
     VEHICLE("Jármű"),
     DATE("Dátum"),
     CREATE("Új elszámolás"),
+    VIEW("Nézet"),
+    DETAILS("Részletek"),
     USER("Felhasználó");
 
     private final String string;

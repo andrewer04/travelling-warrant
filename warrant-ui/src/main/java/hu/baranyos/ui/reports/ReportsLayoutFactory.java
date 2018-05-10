@@ -1,5 +1,6 @@
 package hu.baranyos.ui.reports;
 
+import com.vaadin.data.ValueProvider;
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
@@ -9,7 +10,13 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.renderers.ButtonRenderer;
+import com.vaadin.ui.renderers.ClickableRenderer.RendererClickEvent;
+import com.vaadin.ui.renderers.ClickableRenderer.RendererClickListener;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
@@ -32,6 +39,8 @@ public class ReportsLayoutFactory extends VerticalLayout implements View {
     ListDataProvider<Report> dataProvider;
     List<Report> reportList;
     Button createButton;
+    ReportDetails details;
+    Window detailsWindow;
 
     @Autowired
     private ReportService reportService;
@@ -43,8 +52,30 @@ public class ReportsLayoutFactory extends VerticalLayout implements View {
 
         reportGrid = new Grid<Report>();
         reportGrid.setSizeFull();
+        reportGrid.setSelectionMode(SelectionMode.SINGLE);
+
+        details = new ReportDetails();
+        detailsWindow = new Window(ReportStringUtils.DETAILS.getString());
+
+        detailsWindow.setClosable(true);
+        detailsWindow.setResizable(true);
+        detailsWindow.center();
+        detailsWindow.setContent(new ReportDetails());
 
         reportGrid.addColumn(Report::getDate).setCaption(ReportStringUtils.DATE.getString());
+        reportGrid.addColumn(Report::getVehicle).setCaption(ReportStringUtils.VEHICLE.getString());
+        reportGrid.addColumn(new ValueProvider<Report, String>() {
+            @Override
+            public String apply(final Report report) {
+                return ReportStringUtils.VIEW.getString();
+            }
+        }, new ButtonRenderer<>(new RendererClickListener<Report>() {
+            @Override
+            public void click(final RendererClickEvent<Report> clickEvent) {
+                UI.getCurrent().addWindow(detailsWindow);
+            }
+        }))
+                .setCaption(ReportStringUtils.DETAILS.getString());
 
         createButton = new Button(ReportStringUtils.CREATE.getString());
         createButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
