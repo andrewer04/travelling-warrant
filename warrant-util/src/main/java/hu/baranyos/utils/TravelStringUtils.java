@@ -7,6 +7,8 @@ public enum TravelStringUtils {
     END_LOCATION("Hova:"),
     START_KM("Kezdő Km:"),
     END_KM("Befejező Km:"),
+    DATE("Dátum"),
+    DISTANCE("Táv"),
     USERS("Utasok:");
 
     private final String string;

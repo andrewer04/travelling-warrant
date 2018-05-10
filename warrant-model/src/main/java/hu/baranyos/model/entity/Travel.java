@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class Travel {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "USERS_TRAVELS",
             joinColumns = @JoinColumn(name = "travel_id", referencedColumnName = "id"),
