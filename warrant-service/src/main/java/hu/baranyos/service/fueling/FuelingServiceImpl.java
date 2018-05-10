@@ -39,4 +39,12 @@ public class FuelingServiceImpl implements FuelingService {
         return fuelingRepository.findAll();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Fueling> getByDateAfter(final Date date) {
+        if (date == null) {
+            return fuelingRepository.findAll();
+        }
+        return fuelingRepository.findByDateAfter(date);
+    }
 }

@@ -7,5 +7,5 @@ import hu.baranyos.model.entity.Report;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Integer> {
-
+    public Report findTopByOrderByDateDesc();
 }

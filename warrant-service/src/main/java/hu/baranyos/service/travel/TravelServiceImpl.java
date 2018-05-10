@@ -48,4 +48,13 @@ public class TravelServiceImpl implements TravelService {
         return travelRepository.findOne(id);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Travel> getByDateAfter(final Date date) {
+        if (date == null) {
+            return travelRepository.findAll();
+        }
+        return travelRepository.findByDateAfter(date);
+    }
+
 }

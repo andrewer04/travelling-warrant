@@ -9,8 +9,10 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -24,8 +26,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import hu.baranyos.model.entity.Report;
+import hu.baranyos.model.entity.Vehicle;
 import hu.baranyos.service.report.ReportService;
+import hu.baranyos.service.vehicle.VehicleService;
 import hu.baranyos.ui.commons.WarrantMainUI;
+import hu.baranyos.utils.FuelingStringUtils;
 import hu.baranyos.utils.ReportStringUtils;
 
 @SpringView(name = ReportsLayoutFactory.NAME, ui = WarrantMainUI.class)
@@ -38,12 +43,15 @@ public class ReportsLayoutFactory extends VerticalLayout implements View {
     Grid<Report> reportGrid;
     ListDataProvider<Report> dataProvider;
     List<Report> reportList;
+    ComboBox<Vehicle> vehicles;
     Button createButton;
-    ReportDetails details;
     Window detailsWindow;
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private VehicleService vehicleService;
 
     public ReportsLayoutFactory() {
         super();
@@ -54,13 +62,11 @@ public class ReportsLayoutFactory extends VerticalLayout implements View {
         reportGrid.setSizeFull();
         reportGrid.setSelectionMode(SelectionMode.SINGLE);
 
-        details = new ReportDetails();
         detailsWindow = new Window(ReportStringUtils.DETAILS.getString());
 
         detailsWindow.setClosable(true);
         detailsWindow.setResizable(true);
         detailsWindow.center();
-        detailsWindow.setContent(new ReportDetails());
 
         reportGrid.addColumn(Report::getDate).setCaption(ReportStringUtils.DATE.getString());
         reportGrid.addColumn(Report::getVehicle).setCaption(ReportStringUtils.VEHICLE.getString());
@@ -72,17 +78,20 @@ public class ReportsLayoutFactory extends VerticalLayout implements View {
         }, new ButtonRenderer<>(new RendererClickListener<Report>() {
             @Override
             public void click(final RendererClickEvent<Report> clickEvent) {
+                final ReportDetails details = new ReportDetails(clickEvent.getItem());
+                detailsWindow.setContent(details);
                 UI.getCurrent().addWindow(detailsWindow);
             }
-        }))
-                .setCaption(ReportStringUtils.DETAILS.getString());
+        })).setCaption(ReportStringUtils.DETAILS.getString());
+
+        vehicles = new ComboBox<>();
 
         createButton = new Button(ReportStringUtils.CREATE.getString());
         createButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
         createButton.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent clickEvent) {
-                reportService.saveReport();
+                reportService.saveReport(vehicles.getValue());
             }
         });
     }
@@ -96,12 +105,16 @@ public class ReportsLayoutFactory extends VerticalLayout implements View {
 
     private void addLayout() {
         this.addComponent(reportGrid);
-        this.addComponent(createButton);
+        this.addComponent(new HorizontalLayout(vehicles, createButton));
     }
 
     private void load() {
         reportList = reportService.getAllReport();
         dataProvider = DataProvider.ofCollection(reportList);
         reportGrid.setDataProvider(dataProvider);
+
+        vehicles.setItems(vehicleService.getAllVehicle());
+        vehicles.setPlaceholder(FuelingStringUtils.VEHICLE_PLACEHOLDER.getString());
+        vehicles.setItemCaptionGenerator(Vehicle::getName);
     }
 }
