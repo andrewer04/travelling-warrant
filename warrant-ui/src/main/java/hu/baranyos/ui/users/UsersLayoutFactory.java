@@ -33,8 +33,11 @@ public class UsersLayoutFactory extends VerticalLayout implements View {
 
     public UsersLayoutFactory() {
         super();
+        this.setMargin(false);
+        setSizeFull();
 
         userGrid = new Grid<>();
+        userGrid.setSizeFull();
 
         userGrid.addColumn(User::getFirstName).setCaption(UserStringUtils.FIRST_NAME.getString());
         userGrid.addColumn(User::getLastName).setCaption(UserStringUtils.LAST_NAME.getString());
@@ -52,13 +55,12 @@ public class UsersLayoutFactory extends VerticalLayout implements View {
 
     private void loadUsers() {
         userList = userService.getAllUser();
+        userList.remove(userService.getCurrentUser());
         dataProvider = DataProvider.ofCollection(userList);
         userGrid.setDataProvider(dataProvider);
     }
 
     private void addLayout() {
-        setMargin(true);
-        setSpacing(false);
         this.addComponent(userGrid);
     }
 }

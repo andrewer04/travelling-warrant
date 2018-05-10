@@ -4,6 +4,8 @@ public enum FuelingStringUtils {
 
     AMOUNT("Mennyiség"),
     VEHICLE("Jármű"),
+    DATE("Dátum"),
+    USER("Felhasználó"),
     VEHICLE_PLACEHOLDER("Adj meg egy járművet"),
     AMOUNT_WARNING("Helyes összeget adj meg");
 
