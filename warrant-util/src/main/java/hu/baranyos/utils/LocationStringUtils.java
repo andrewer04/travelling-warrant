@@ -2,7 +2,7 @@ package hu.baranyos.utils;
 
 public enum LocationStringUtils {
 
-    NAME("Név");
+    NAME("Helyszín");
 
     private final String string;
 
