@@ -11,15 +11,18 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 
 import hu.baranyos.model.entity.Location;
 import hu.baranyos.service.location.LocationService;
 import hu.baranyos.ui.commons.WarrantMainUI;
 import hu.baranyos.utils.LocationStringUtils;
+import hu.baranyos.utils.ReportStringUtils;
 import hu.baranyos.utils.UserStringUtils;
 
 @SpringView(name = NewLocationLayoutFactory.NAME, ui = WarrantMainUI.class)
@@ -78,8 +81,14 @@ public class NewLocationLayoutFactory extends FormLayout implements View {
         saveButton.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
-                locationService.saveLocation(binder.getBean());
-                clearFields();
+                try {
+                    locationService.saveLocation(binder.getBean());
+                } catch (final AccessDeniedException e) {
+                    Notification.show(ReportStringUtils.WARNING.getString());
+                }
+                finally {
+                    clearFields();
+                }
             }
 
         });

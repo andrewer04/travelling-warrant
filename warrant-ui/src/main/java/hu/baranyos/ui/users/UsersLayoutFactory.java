@@ -55,7 +55,7 @@ public class UsersLayoutFactory extends VerticalLayout implements View {
 
     private void loadUsers() {
         userList = userService.getAllUser();
-        userList.remove(userService.getCurrentUser());
+        userList.remove(userService.getUser(1));
         dataProvider = DataProvider.ofCollection(userList);
         userGrid.setDataProvider(dataProvider);
     }
