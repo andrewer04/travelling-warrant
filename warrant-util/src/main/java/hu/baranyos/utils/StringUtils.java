@@ -14,6 +14,8 @@ public enum StringUtils {
     NEW_LOCATION("Új helyszín"),
     NEW_VEHICLE("Új jármű"),
     NEW_TRAVEL("Új utazás"),
+    STATISTIC("Statisztika"),
+    USAGE_STAT("Használat"),
     ADD_FUELING("Új tankolás");
 
     private final String string;
