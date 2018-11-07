@@ -41,7 +41,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional(readOnly = true)
     public Vehicle getVehicle(final Integer id) {
-        return vehicleRepository.findOne(id);
+        return vehicleRepository.findById(id).get();
     }
 
 }

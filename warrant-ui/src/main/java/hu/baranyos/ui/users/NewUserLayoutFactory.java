@@ -30,6 +30,8 @@ import hu.baranyos.utils.UserStringUtils;
 @SpringView(name = NewUserLayoutFactory.NAME, ui = WarrantMainUI.class)
 public class NewUserLayoutFactory extends FormLayout implements View {
 
+    private static final long serialVersionUID = 1L;
+
     private final TextField firstName;
     private final TextField lastName;
     private final TextField age;

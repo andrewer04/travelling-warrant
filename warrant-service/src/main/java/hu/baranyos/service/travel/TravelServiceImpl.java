@@ -45,7 +45,7 @@ public class TravelServiceImpl implements TravelService {
     @Override
     @Transactional(readOnly = true)
     public Travel getTravel(final Integer id) {
-        return travelRepository.findOne(id);
+        return travelRepository.findById(id).get();
     }
 
     @Override

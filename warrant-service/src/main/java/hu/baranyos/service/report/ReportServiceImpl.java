@@ -75,7 +75,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     @Transactional(readOnly = true)
     public Report getReport(final Integer id) {
-        return reportRepository.findOne(id);
+        return reportRepository.findById(id).get();
     }
 
     private Date updateLastDate() {
@@ -103,7 +103,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private Set<User> getUsers(final List<Travel> travelList) {
-        final Set<User> list = new HashSet();
+        final Set<User> list = new HashSet<User>();
         for (final Travel travel : travelList) {
             for (final User user : travel.getUsers()) {
                 list.add(user);
