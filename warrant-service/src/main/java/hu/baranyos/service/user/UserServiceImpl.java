@@ -73,10 +73,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         return user;
 
-        /*
-         * return new CustomUserDetails(user.getUsername(), user .getPassword(), true, true, true,
-         * true, user.getAuthorities());
-         */
     }
 
     @Override
