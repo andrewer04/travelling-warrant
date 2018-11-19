@@ -1,3 +1,11 @@
 language: java
+sudo: required
 jdk:
-  - oraclejdk8
+    - oraclejdk8
+  
+services:
+    - docker
+  
+branches:
+    only:
+    - master
