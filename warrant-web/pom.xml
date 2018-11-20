@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>hu.baranyos</groupId>
 		<artifactId>warrant</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.9-RELEASE</version>
 	</parent>
 	<artifactId>warrant-web</artifactId>
 	<packaging>jar</packaging>
@@ -52,6 +52,7 @@
 	</repositories>
 
 	<build>
+		<finalName>routing-system-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -65,15 +66,34 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.9</version>
+				<configuration>
+					<username>andrewer04</username>
+					<password>s4n1SPTV0Q6k</password>
+					<repository>andrewer04/routing-system</repository>
+					<tag>${project.version}</tag>
+					<buildArgs>
+						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-maven-plugin</artifactId>
 				<version>8.5.2</version>
 				<executions>
-					<!-- You are free to mark this as permanently ignored in Eclipse -->
 					<execution>
-						<configuration>
-							<!-- if you don't specify any modules, the plugin will find them -->
-						</configuration>
 						<goals>
 							<goal>resources</goal>
 							<goal>update-widgetset</goal>
