@@ -94,6 +94,14 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
     @Override
     public String getPassword() {
         return password;
@@ -134,10 +142,6 @@ public class User implements UserDetails {
 
     public void setEnabled(final boolean isEnabled) {
         this.isEnabled = isEnabled;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public String getFirstName() {

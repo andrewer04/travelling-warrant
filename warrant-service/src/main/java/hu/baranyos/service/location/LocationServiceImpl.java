@@ -30,12 +30,11 @@ public class LocationServiceImpl implements LocationService {
         location.setName(locationDAO.getName());
 
         locationRepository.save(location);
-
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Location getLocaton(final String name) {
+    public Location getLocation(final String name) {
         return locationRepository.findByName(name);
     }
 

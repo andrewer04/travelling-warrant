@@ -9,5 +9,5 @@ public interface LocationService {
 
     public void saveLocation(Location locationDAO);
 
-    public Location getLocaton(String name);
+    public Location getLocation(String name);
 }

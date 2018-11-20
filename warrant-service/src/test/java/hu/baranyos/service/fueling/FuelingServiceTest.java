@@ -1,13 +1,13 @@
 package hu.baranyos.service.fueling;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -20,8 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import hu.baranyos.model.entity.Fueling;
 import hu.baranyos.repository.fueling.FuelingRepository;
+import hu.baranyos.service.user.UserService;
 
-@Ignore
 @RunWith(SpringRunner.class)
 public class FuelingServiceTest {
 
@@ -38,18 +38,28 @@ public class FuelingServiceTest {
     private FuelingService fuelingService;
 
     @MockBean
+    private UserService userService;
+
+    @MockBean
     private FuelingRepository fuelingRepository;
 
     List<Fueling> fuelingList = new ArrayList<>();
+    List<Fueling> foundList;
+    Calendar cal = Calendar.getInstance();
+    Fueling fueling;
 
     @Before
     public void setUp() {
-        Fueling fueling = new Fueling();
+        fueling = new Fueling();
         fueling.setAmount(3000);
+        cal.set(2018, 10, 11);
+        fueling.setDate(cal.getTime());
         fuelingList.add(fueling);
 
         fueling = new Fueling();
         fueling.setAmount(4000);
+        cal.set(2018, 11, 10);
+        fueling.setDate(cal.getTime());
         fuelingList.add(fueling);
 
         Mockito.when(fuelingRepository.findAll()).thenReturn(fuelingList);
@@ -58,8 +68,14 @@ public class FuelingServiceTest {
     }
 
     @Test
-    public void getByDateAfterTest() {
-        final List<Fueling> foundList = fuelingService.getAllFuelings();
+    public void getAllFuelingsTest() {
+        foundList = fuelingService.getAllFuelings();
         Assertions.assertThat(foundList).isEqualTo(fuelingList);
+    }
+
+    @Test
+    public void getByDateAfterTest() {
+        foundList = fuelingService.getByDateAfter(cal.getTime());
+        Assertions.assertThat(foundList).isEqualTo(new ArrayList<>(Arrays.asList(fueling)));
     }
 }
