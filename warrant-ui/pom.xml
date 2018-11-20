@@ -26,17 +26,17 @@
 		<dependency>
 			<groupId>hu.baranyos</groupId>
 			<artifactId>warrant-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>hu.baranyos</groupId>
 			<artifactId>warrant-model</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>hu.baranyos</groupId>
 			<artifactId>warrant-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
