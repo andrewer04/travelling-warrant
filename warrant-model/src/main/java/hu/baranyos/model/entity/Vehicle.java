@@ -21,6 +21,8 @@ public class Vehicle {
     @Column(unique = true)
     private String name;
 
+    private int speedometer;
+
     private double consumption;
 
     @Column(unique = true)
@@ -46,6 +48,14 @@ public class Vehicle {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public int getSpeedometer() {
+        return speedometer;
+    }
+
+    public void setSpeedometer(final int speedometer) {
+        this.speedometer = speedometer;
     }
 
     public double getConsumption() {

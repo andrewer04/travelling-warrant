@@ -27,6 +27,7 @@ public class VehicleServiceImpl implements VehicleService {
         final Vehicle vehicle = new Vehicle();
         vehicle.setConsumption(VehicleDAO.getConsumption());
         vehicle.setLicencePlateNumber(VehicleDAO.getLicencePlateNumber());
+        vehicle.setSpeedometer(VehicleDAO.getSpeedometer());
         vehicle.setName(VehicleDAO.getName());
 
         vehicleRepository.save(vehicle);
