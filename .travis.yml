@@ -5,6 +5,16 @@ jdk:
   
 services:
     - docker
+    
+before_install:
+    - docker build -t routing-system .
+    - docker tag routing-system andrewer04/routing-system:latest
+    
+deploy:
+    - provider: script
+    - script: bash docker_push
+    on:
+        branch: master
   
 branches:
     only:
