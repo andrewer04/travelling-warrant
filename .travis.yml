@@ -11,8 +11,8 @@ before_install:
     - docker tag routing-system andrewer04/routing-system:latest
     
 deploy:
-    - provider: script
-    - script: bash docker_push
+    provider: script
+    script: bash docker_push
     on:
       branch: master
   
