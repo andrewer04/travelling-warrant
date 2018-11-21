@@ -12,4 +12,6 @@ public interface VehicleService {
     public List<Vehicle> getAllVehicle();
 
     public Vehicle getVehicle(Integer id);
+
+    public void updateSpeedometer(final Vehicle vehicle, int speedometer);
 }

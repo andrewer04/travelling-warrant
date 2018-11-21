@@ -1,6 +1,8 @@
 package hu.baranyos.ui.travels;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue.ValueChangeEvent;
+import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.data.StatusChangeEvent;
 import com.vaadin.data.StatusChangeListener;
 import com.vaadin.data.converter.StringToIntegerConverter;
@@ -62,6 +64,8 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
     private final Button clearButton;
 
     private Binder<Travel> binder;
+    // private Binder.BindingBuilder<Travel, Integer> endBindingBuilder;
+    // private Binder.Binding<Travel, Integer> endBinder;
 
     private NewTravelLayoutFactory() {
         super();
@@ -83,6 +87,7 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
         vehicles.setItems(vehicleService.getAllVehicle());
         from.setItems(locationService.getAllLocation());
         to.setItems(locationService.getAllLocation());
+        start.setEnabled(false);
 
         final List<User> travellers = userService.getAllUser();
 
@@ -131,13 +136,22 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
                 .asRequired()
                 .withConverter(new StringToIntegerConverter(""))
                 .bind(Travel::getStart, Travel::setStart);
+
         binder.forField(end)
                 .asRequired()
                 .withConverter(new StringToIntegerConverter(""))
                 .bind(Travel::getEnd, Travel::setEnd);
+
         binder.forField(addUser)
                 .asRequired()
                 .bind(Travel::getUsers, Travel::setUsers);
+
+/*
+ * endBindingBuilder = binder.forField(end) .asRequired() .withConverter(new
+ * StringToIntegerConverter("")) .withValidator(new IntegerRangeValidator("", Integer
+ * .parseInt(start.getValue()), 999999)); endBinder = endBindingBuilder.bind(Travel::getEnd,
+ * Travel::setEnd);
+ */
 
         binder.setBean(new Travel());
 
@@ -145,6 +159,8 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
             @Override
             public void buttonClick(final ClickEvent event) {
                 travelService.saveTravel(binder.getBean());
+                vehicleService
+                        .updateSpeedometer(vehicles.getValue(), Integer.parseInt(end.getValue()));
                 clearFields();
             }
         });
@@ -160,6 +176,20 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
             @Override
             public void statusChange(final StatusChangeEvent event) {
                 saveButton.setEnabled(binder.isValid());
+            }
+        });
+
+        vehicles.addValueChangeListener(new ValueChangeListener<Vehicle>() {
+            @Override
+            public void valueChange(final ValueChangeEvent<Vehicle> event) {
+                if (vehicles.getValue() == null) {
+                    start.setValue("");
+                } else {
+                    start.setValue(Integer.toString(vehicles.getValue().getSpeedometer()));
+                    end.setValue(Integer.toString(vehicles.getValue().getSpeedometer() + 1));
+                }
+
+                // endBinder.validate();
             }
         });
 

@@ -45,4 +45,11 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.findById(id).get();
     }
 
+    @Override
+    @Transactional
+    public void updateSpeedometer(final Vehicle vehicle, final int speedometer) {
+        vehicle.setSpeedometer(speedometer);
+        vehicleRepository.save(vehicle);
+    }
+
 }
