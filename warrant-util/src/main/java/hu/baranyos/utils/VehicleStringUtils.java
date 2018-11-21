@@ -5,7 +5,9 @@ public enum VehicleStringUtils {
     NAME("Név"),
     CONSUMPTION("Fogyasztás (L/100 KM)"),
     LICENCE_PLATE_NUMBER("Rendszám"),
+    SPEEDOMETER("Km óra állás"),
     CONSUMPTION_WARNING("Helyes fogyasztást adj meg!"),
+    SPEEDOMETER_WARNING("Helyes km óra állást adj meg!"),
     LICENCE_WARNING("Helyes rendszámot adj meg");
 
     private final String string;

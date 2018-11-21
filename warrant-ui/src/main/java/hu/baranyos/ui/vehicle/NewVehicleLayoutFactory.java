@@ -4,6 +4,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.StatusChangeEvent;
 import com.vaadin.data.StatusChangeListener;
 import com.vaadin.data.converter.StringToDoubleConverter;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
@@ -36,6 +37,7 @@ public class NewVehicleLayoutFactory extends FormLayout implements View {
     private final TextField name;
     private final TextField consumption;
     private final TextField licencePlateNumber;
+    private final TextField speedometer;
     private final Button saveButton;
     private final Button clearButton;
 
@@ -49,6 +51,7 @@ public class NewVehicleLayoutFactory extends FormLayout implements View {
         name = new TextField(VehicleStringUtils.NAME.getString());
         consumption = new TextField(VehicleStringUtils.CONSUMPTION.getString());
         licencePlateNumber = new TextField(VehicleStringUtils.LICENCE_PLATE_NUMBER.getString());
+        speedometer = new TextField(VehicleStringUtils.SPEEDOMETER.getString());
         saveButton = new Button(UserStringUtils.SAVE_BUTTON.getString());
         clearButton = new Button(UserStringUtils.CLEAR_BUTTON.getString());
 
@@ -70,6 +73,7 @@ public class NewVehicleLayoutFactory extends FormLayout implements View {
     private void addLayout() {
         this.addComponent(name);
         this.addComponent(licencePlateNumber);
+        this.addComponent(speedometer);
         this.addComponent(consumption);
         this.addComponent(new HorizontalLayout(saveButton, clearButton));
 
@@ -85,6 +89,12 @@ public class NewVehicleLayoutFactory extends FormLayout implements View {
                 .withConverter(new StringToDoubleConverter(VehicleStringUtils.CONSUMPTION_WARNING
                         .getString()))
                 .bind(Vehicle::getConsumption, Vehicle::setConsumption);
+
+        binder.forField(speedometer)
+                .asRequired()
+                .withConverter(new StringToIntegerConverter(VehicleStringUtils.SPEEDOMETER_WARNING
+                        .getString()))
+                .bind(Vehicle::getSpeedometer, Vehicle::setSpeedometer);
 
         binder.forField(licencePlateNumber)
                 .asRequired()
@@ -120,5 +130,6 @@ public class NewVehicleLayoutFactory extends FormLayout implements View {
         name.clear();
         consumption.clear();
         licencePlateNumber.clear();
+        speedometer.clear();
     }
 }

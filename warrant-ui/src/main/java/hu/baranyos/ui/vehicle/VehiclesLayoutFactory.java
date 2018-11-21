@@ -41,6 +41,8 @@ public class VehiclesLayoutFactory extends VerticalLayout implements View {
         vehicleGrid.addColumn(Vehicle::getName).setCaption(VehicleStringUtils.NAME.getString());
         vehicleGrid.addColumn(Vehicle::getLicencePlateNumber)
                 .setCaption(VehicleStringUtils.LICENCE_PLATE_NUMBER.getString());
+        vehicleGrid.addColumn(Vehicle::getSpeedometer)
+                .setCaption(VehicleStringUtils.SPEEDOMETER.getString());
         vehicleGrid.addColumn(Vehicle::getConsumption)
                 .setCaption(VehicleStringUtils.CONSUMPTION.getString());
     }

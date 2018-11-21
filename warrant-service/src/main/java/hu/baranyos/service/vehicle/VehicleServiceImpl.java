@@ -27,6 +27,7 @@ public class VehicleServiceImpl implements VehicleService {
         final Vehicle vehicle = new Vehicle();
         vehicle.setConsumption(VehicleDAO.getConsumption());
         vehicle.setLicencePlateNumber(VehicleDAO.getLicencePlateNumber());
+        vehicle.setSpeedometer(VehicleDAO.getSpeedometer());
         vehicle.setName(VehicleDAO.getName());
 
         vehicleRepository.save(vehicle);
@@ -42,6 +43,13 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional(readOnly = true)
     public Vehicle getVehicle(final Integer id) {
         return vehicleRepository.findById(id).get();
+    }
+
+    @Override
+    @Transactional
+    public void updateSpeedometer(final Vehicle vehicle, final int speedometer) {
+        vehicle.setSpeedometer(speedometer);
+        vehicleRepository.save(vehicle);
     }
 
 }
