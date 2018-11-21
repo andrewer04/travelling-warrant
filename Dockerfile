@@ -4,8 +4,7 @@ MAINTAINER Bárányos András "baranyos.andras@gmail.com"
 
 VOLUME /tmp
 
-ARG JAR_FILE=warrant-web/target/routing-system-0.9-RELEASE.jar
-ADD ${JAR_FILE} rsservice.jar
+ADD warrant-web/target/routing-system-[0-9].[0-9]-RELEASE.jar rsservice.jar
 
 EXPOSE 8080
 
