@@ -64,8 +64,6 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
     private final Button clearButton;
 
     private Binder<Travel> binder;
-    // private Binder.BindingBuilder<Travel, Integer> endBindingBuilder;
-    // private Binder.Binding<Travel, Integer> endBinder;
 
     private NewTravelLayoutFactory() {
         super();
@@ -136,7 +134,6 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
                 .asRequired()
                 .withConverter(new StringToIntegerConverter(""))
                 .bind(Travel::getStart, Travel::setStart);
-
         binder.forField(end)
                 .asRequired()
                 .withConverter(new StringToIntegerConverter(""))
@@ -145,13 +142,6 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
         binder.forField(addUser)
                 .asRequired()
                 .bind(Travel::getUsers, Travel::setUsers);
-
-/*
- * endBindingBuilder = binder.forField(end) .asRequired() .withConverter(new
- * StringToIntegerConverter("")) .withValidator(new IntegerRangeValidator("", Integer
- * .parseInt(start.getValue()), 999999)); endBinder = endBindingBuilder.bind(Travel::getEnd,
- * Travel::setEnd);
- */
 
         binder.setBean(new Travel());
 
@@ -184,12 +174,11 @@ public class NewTravelLayoutFactory extends VerticalLayout implements View {
             public void valueChange(final ValueChangeEvent<Vehicle> event) {
                 if (vehicles.getValue() == null) {
                     start.setValue("");
+                    end.setValue("");
                 } else {
                     start.setValue(Integer.toString(vehicles.getValue().getSpeedometer()));
                     end.setValue(Integer.toString(vehicles.getValue().getSpeedometer() + 1));
                 }
-
-                // endBinder.validate();
             }
         });
 
